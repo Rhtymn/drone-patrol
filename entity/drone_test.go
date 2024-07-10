@@ -8,7 +8,9 @@ import (
 
 func TestNewDrone(t *testing.T) {
 	t.Run("should return drone with zero value on each attribute", func(t *testing.T) {
-		drone := entity.NewDrone()
+		posX, posY := 1, 1
+
+		drone := entity.NewDrone(posX, posY)
 
 		if drone.PosX() != 0 && drone.PosY() != 0 && drone.TravelDistance() != 0 {
 			t.Fatalf("drone should have pos (0, 0) and travel distance 0 but got (%d, %d) and %d",

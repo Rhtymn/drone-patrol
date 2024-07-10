@@ -6,8 +6,11 @@ type Drone struct {
 	posY           int
 }
 
-func NewDrone() Drone {
-	return Drone{}
+func NewDrone(posX, posY int) Drone {
+	return Drone{
+		posX: posX,
+		posY: posY,
+	}
 }
 
 func (d *Drone) Reset() {
