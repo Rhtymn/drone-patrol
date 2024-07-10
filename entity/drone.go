@@ -2,6 +2,7 @@ package entity
 
 import (
 	"github.com/SawitProRecruitment/JuniorBackendEngineering/constants"
+	"github.com/SawitProRecruitment/JuniorBackendEngineering/domain"
 )
 
 type Drone struct {
@@ -46,6 +47,10 @@ func (d *Drone) SetHeight(h int) {
 
 func (d *Drone) SetFacing(dir constants.Direction) {
 	d.facing = dir
+}
+
+func (d *Drone) Action(command domain.Commander, dist, meterPerDist int) {
+	command.Action(d, dist, meterPerDist)
 }
 
 func (d Drone) PosX() int {
