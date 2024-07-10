@@ -30,6 +30,13 @@ func NewInternal(msg string) AppError {
 	}
 }
 
+func NewOutOfRangePosition(msg string) AppError {
+	return AppError{
+		msg:  msg,
+		code: OutOfRangePosition,
+	}
+}
+
 func ErrorIs(err error, code int) bool {
 	e, ok := err.(AppError)
 	if !ok {
