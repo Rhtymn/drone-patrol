@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/SawitProRecruitment/JuniorBackendEngineering/commands"
+	"github.com/SawitProRecruitment/JuniorBackendEngineering/constants"
 	"github.com/SawitProRecruitment/JuniorBackendEngineering/entity"
 )
 
@@ -29,6 +30,18 @@ func TestEastAction(t *testing.T) {
 
 		if drone.TravelDistance() != 10*dist {
 			t.Fatalf("incorrect calculating drone travel distance")
+		}
+	})
+
+	t.Run("should make drone to face on east", func(t *testing.T) {
+		posX, posY, dist := 1, 1, 1
+		drone := entity.NewDrone(posX, posY)
+		e := commands.MoveEast()
+
+		e.Action(&drone, dist, 10)
+
+		if drone.Facing() != constants.East {
+			t.Fatalf("incorrect drone facing")
 		}
 	})
 }

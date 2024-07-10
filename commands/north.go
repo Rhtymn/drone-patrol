@@ -1,6 +1,9 @@
 package commands
 
-import "github.com/SawitProRecruitment/JuniorBackendEngineering/domain"
+import (
+	"github.com/SawitProRecruitment/JuniorBackendEngineering/constants"
+	"github.com/SawitProRecruitment/JuniorBackendEngineering/domain"
+)
 
 type North struct{}
 
@@ -12,4 +15,5 @@ func (n North) Action(d domain.Droner, dist, meterPerDist int) {
 	posY, travelDistance := d.PosY(), d.TravelDistance()
 	d.SetPosY(posY + dist)
 	d.SetTravelDistance(travelDistance + meterPerDist*dist)
+	d.SetFacing(constants.North)
 }
