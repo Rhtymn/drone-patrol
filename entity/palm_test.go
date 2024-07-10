@@ -28,6 +28,26 @@ func TestNewPalm(t *testing.T) {
 			t.Fatalf("should return error invalid arguments")
 		}
 	})
+
+	t.Run("should return error InvalidArguments if given height with value not in range 1 to 30 (inclusive)", func(t *testing.T) {
+		h, posX, posY := 40, 1, 1
+
+		_, err := entity.NewPalm(h, posX, posY)
+
+		if err == nil || !apperror.ErrorIs(err, apperror.InvalidArguments) {
+			t.Fatalf("should return error invalid arguments")
+		}
+	})
+
+	t.Run("should not return error if given height with value range 1 to 30 (inclusive)", func(t *testing.T) {
+		h, posX, posY := 15, 1, 1
+
+		_, err := entity.NewPalm(h, posX, posY)
+
+		if err != nil {
+			t.Fatalf("should not return any error")
+		}
+	})
 }
 
 func TestPalmPosX(t *testing.T) {

@@ -9,9 +9,10 @@ type Palm struct {
 }
 
 func NewPalm(height, posX, posY int) (*Palm, error) {
-	if height < 0 {
-		return nil, apperror.NewInvalidArguments("height must be more than or equal zero")
+	if height < 1 || height > 30 {
+		return nil, apperror.NewInvalidArguments("height must be in range from 1 to 30 (inclusive)")
 	}
+
 	return &Palm{
 		height: height,
 		posX:   posX,
