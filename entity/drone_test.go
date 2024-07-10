@@ -3,6 +3,8 @@ package entity_test
 import (
 	"testing"
 
+	"github.com/SawitProRecruitment/JuniorBackendEngineering/commands"
+	"github.com/SawitProRecruitment/JuniorBackendEngineering/constants"
 	"github.com/SawitProRecruitment/JuniorBackendEngineering/entity"
 )
 
@@ -15,6 +17,55 @@ func TestNewDrone(t *testing.T) {
 		if drone.PosX() != 0 && drone.PosY() != 0 && drone.TravelDistance() != 0 {
 			t.Fatalf("drone should have pos (0, 0) and travel distance 0 but got (%d, %d) and %d",
 				drone.PosX(), drone.PosY(), drone.TravelDistance())
+		}
+	})
+}
+
+func TestReset(t *testing.T) {
+	t.Run("should reset drone posiion to (1,1)", func(t *testing.T) {
+		posX, posY := 2, 2
+		drone := entity.NewDrone(posX, posY)
+
+		drone.Reset()
+
+		if drone.PosX() != 1 && drone.PosY() != 1 {
+			t.Fatalf("position should be (1,1)")
+		}
+	})
+
+	t.Run("should reset drone height to 0", func(t *testing.T) {
+		posX, posY := 2, 2
+		drone := entity.NewDrone(posX, posY)
+		drone.Action(commands.MoveUp(), 2, 1)
+
+		drone.Reset()
+
+		if drone.Height() != 0 {
+			t.Fatalf("drone height should be 0")
+		}
+	})
+
+	t.Run("should reset drone facing to east", func(t *testing.T) {
+		posX, posY := 2, 2
+		drone := entity.NewDrone(posX, posY)
+		drone.Action(commands.MoveWest(), 2, 1)
+
+		drone.Reset()
+
+		if drone.Facing() != constants.East {
+			t.Fatalf("drone facing should be on east")
+		}
+	})
+
+	t.Run("should reset travel distance to 0", func(t *testing.T) {
+		posX, posY := 2, 2
+		drone := entity.NewDrone(posX, posY)
+		drone.Action(commands.MoveWest(), 2, 1)
+
+		drone.Reset()
+
+		if drone.TravelDistance() != 0 {
+			t.Fatalf("drone travel distance should be 0")
 		}
 	})
 }
