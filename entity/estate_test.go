@@ -42,6 +42,37 @@ func TestNewEstate(t *testing.T) {
 	})
 }
 
+func TestSetPlants(t *testing.T) {
+	t.Run("should put plant to the correct position", func(t *testing.T) {
+		plotWidth, plotLength := 2, 2
+		h, x, y := 1, 2, 2
+		palm, _ := entity.NewPalm(h, x, y)
+		palms := []entity.Palm{*palm}
+		estate, _ := entity.NewEstate(plotWidth, plotLength)
+
+		estate.SetPlants(palms)
+		res := estate.Plot(x, y)
+
+		if (res.PosX() != x && res.PosY() != y && res.Height() != h) || res == nil {
+			t.Fatalf("plant doesn't plot in the correct position")
+		}
+	})
+
+	t.Run("should return error out of range position when given palm out of range from estate", func(t *testing.T) {
+		plotWidth, plotLength := 2, 2
+		h, x, y := 1, 2, 3
+		palm, _ := entity.NewPalm(h, x, y)
+		palms := []entity.Palm{*palm}
+		estate, _ := entity.NewEstate(plotWidth, plotLength)
+
+		err := estate.SetPlants(palms)
+
+		if err == nil || !apperror.ErrorIs(err, apperror.OutOfRangePosition) {
+			t.Fatalf("should return error out of range position")
+		}
+	})
+}
+
 func TestEstatePlotWidth(t *testing.T) {
 	t.Run("should return correct estate plot width", func(t *testing.T) {
 		plotWidth, plotLength := 2, 3
