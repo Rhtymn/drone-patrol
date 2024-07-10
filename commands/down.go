@@ -4,13 +4,13 @@ import (
 	"github.com/SawitProRecruitment/JuniorBackendEngineering/domain"
 )
 
-type Down struct{}
+type down struct{}
 
-func MoveDown() Down {
-	return Down{}
+func MoveDown() down {
+	return down{}
 }
 
-func (dn Down) Action(d domain.Droner, dist, meterPerDist int) {
+func (dn down) Action(d domain.Droner, dist, meterPerDist int) {
 	h, travelDistance := d.Height(), d.TravelDistance()
 	d.SetHeight(h - dist)
 	d.SetTravelDistance(travelDistance + meterPerDist*dist)

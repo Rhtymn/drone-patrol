@@ -5,13 +5,13 @@ import (
 	"github.com/SawitProRecruitment/JuniorBackendEngineering/domain"
 )
 
-type North struct{}
+type north struct{}
 
-func MoveNorth() North {
-	return North{}
+func MoveNorth() north {
+	return north{}
 }
 
-func (n North) Action(d domain.Droner, dist, meterPerDist int) {
+func (n north) Action(d domain.Droner, dist, meterPerDist int) {
 	posY, travelDistance := d.PosY(), d.TravelDistance()
 	d.SetPosY(posY + dist)
 	d.SetTravelDistance(travelDistance + meterPerDist*dist)

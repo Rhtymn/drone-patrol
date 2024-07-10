@@ -2,13 +2,13 @@ package commands
 
 import "github.com/SawitProRecruitment/JuniorBackendEngineering/domain"
 
-type Up struct{}
+type up struct{}
 
-func MoveUp() Up {
-	return Up{}
+func MoveUp() up {
+	return up{}
 }
 
-func (u Up) Action(d domain.Droner, dist, meterPerDist int) {
+func (u up) Action(d domain.Droner, dist, meterPerDist int) {
 	h, travelDistance := d.Height(), d.TravelDistance()
 	d.SetHeight(h + dist)
 	d.SetTravelDistance(travelDistance + meterPerDist*dist)
