@@ -37,6 +37,21 @@ func NewOutOfRangePosition(msg string) AppError {
 	}
 }
 
+func NewInsufficientPlots() AppError {
+	return AppError{
+		msg:  "insufficient plots",
+		code: InsufficientPlots,
+	}
+}
+
+func Wrap(err error) AppError {
+	e, ok := err.(AppError)
+	if !ok {
+		return NewInternal(e.Error())
+	}
+	return e
+}
+
 func ErrorIs(err error, code int) bool {
 	e, ok := err.(AppError)
 	if !ok {
