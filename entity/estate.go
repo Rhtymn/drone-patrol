@@ -27,19 +27,23 @@ func NewEstate(plotWidth, plotLength int) (*Estate, error) {
 }
 
 func (e *Estate) SetPlants(palms []Palm) error {
+	if len(palms) > e.plotLength*e.plotWidth {
+		return apperror.NewInsufficientPlots()
+	}
+
 	for i := 0; i < len(palms); i++ {
 		palm := palms[i]
 		if !e.inEstate(palm.posX, palm.posY) {
 			e.resetPlots()
 			return apperror.NewOutOfRangePosition("plant position out of range from estate")
 		}
-		e.plots[palm.posX-1][palm.posY-1] = &palm
+		e.plots[palm.posY-1][palm.posX-1] = &palm
 	}
 	return nil
 }
 
 func (e *Estate) inEstate(x, y int) bool {
-	return x <= e.plotLength && x > 0 && y > 0 && y <= e.plotWidth
+	return x <= e.plotWidth && x > 0 && y > 0 && y <= e.plotLength
 }
 
 func (e *Estate) resetPlots() {
@@ -50,7 +54,7 @@ func (e *Estate) resetPlots() {
 }
 
 func (e Estate) Plot(x, y int) *Palm {
-	return e.plots[x-1][y-1]
+	return e.plots[y-1][x-1]
 }
 
 func (e Estate) PlotWidth() int {

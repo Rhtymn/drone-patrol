@@ -71,6 +71,20 @@ func TestSetPlants(t *testing.T) {
 			t.Fatalf("should return error out of range position")
 		}
 	})
+
+	t.Run("should return error insufficient plots when given palm more than plot numbers", func(t *testing.T) {
+		plotWidth, plotLength := 1, 1
+		p1, _ := entity.NewPalm(10, 1, 1)
+		p2, _ := entity.NewPalm(10, 1, 1)
+		palms := []entity.Palm{*p1, *p2}
+		estate, _ := entity.NewEstate(plotWidth, plotLength)
+
+		err := estate.SetPlants(palms)
+
+		if err == nil || !apperror.ErrorIs(err, apperror.InsufficientPlots) {
+			t.Fatalf("should return error insufficient plots")
+		}
+	})
 }
 
 func TestEstatePlotWidth(t *testing.T) {
