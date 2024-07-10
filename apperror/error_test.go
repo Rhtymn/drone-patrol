@@ -43,6 +43,18 @@ func TestNewInternal(t *testing.T) {
 	})
 }
 
+func TestNewOutOfRangePosition(t *testing.T) {
+	t.Run("should return app error with code OutOfRangePosition", func(t *testing.T) {
+		msg := "message"
+
+		err := apperror.NewOutOfRangePosition(msg)
+
+		if !apperror.ErrorIs(err, apperror.OutOfRangePosition) {
+			t.Fatalf("invalid code")
+		}
+	})
+}
+
 func TestErrorIs(t *testing.T) {
 	t.Run("should return false when given error not apperror", func(t *testing.T) {
 		e := errors.New("message")
