@@ -1,5 +1,7 @@
 package entity
 
+import "github.com/SawitProRecruitment/JuniorBackendEngineering/apperror"
+
 type Estate struct {
 	plotWidth  int
 	plotLength int
@@ -7,17 +9,21 @@ type Estate struct {
 	plots [][]*Palm
 }
 
-func NewEstate(plotWidth, plotLength int) Estate {
+func NewEstate(plotWidth, plotLength int) (*Estate, error) {
+	if plotWidth <= 0 || plotLength <= 0 {
+		return nil, apperror.NewInvalidArguments("plotWidth and plotLength must be more than zero")
+	}
+
 	plots := make([][]*Palm, plotLength)
 	for i := 0; i < len(plots); i++ {
 		plots[i] = make([]*Palm, plotWidth)
 	}
 
-	return Estate{
+	return &Estate{
 		plotWidth:  plotWidth,
 		plotLength: plotLength,
 		plots:      plots,
-	}
+	}, nil
 }
 
 func (e *Estate) SetPlants(palms []Palm) {
