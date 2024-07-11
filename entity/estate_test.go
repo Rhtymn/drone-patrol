@@ -8,33 +8,33 @@ import (
 )
 
 func TestNewEstate(t *testing.T) {
-	t.Run("should return estate with correct plotWidth and plotLength", func(t *testing.T) {
-		plotWidth, plotLength := 2, 3
+	t.Run("should return estate with correct width and length", func(t *testing.T) {
+		width, length := 2, 3
 
-		estate, _ := entity.NewEstate(plotWidth, plotLength)
+		estate, _ := entity.NewEstate(width, length)
 
-		if estate.PlotWidth() != plotWidth || estate.PlotLength() != plotLength {
-			t.Fatalf("estate should have plotWidth %d and plotLength %d, but got plotWidth %d and plotLength %d",
-				plotWidth, plotLength, estate.PlotWidth(), estate.PlotLength())
+		if estate.Width() != width || estate.Length() != length {
+			t.Fatalf("estate should have width %d and length %d, but got width %d and length %d",
+				width, length, estate.Width(), estate.Length())
 		}
 	})
 
 	t.Run("should return estate with correct plots capacity", func(t *testing.T) {
-		plotWidth, plotLength := 2, 3
+		width, length := 2, 3
 
-		estate, _ := entity.NewEstate(plotWidth, plotLength)
+		estate, _ := entity.NewEstate(width, length)
 		plots := estate.Plots()
 
-		if len(plots) != plotLength || len(plots[0]) != plotWidth {
+		if len(plots) != length || len(plots[0]) != width {
 			t.Fatalf("estate should have plots with length %d and width %d, but got length %d and width %d",
-				plotLength, plotWidth, len(plots), len(plots[0]))
+				length, width, len(plots), len(plots[0]))
 		}
 	})
 
-	t.Run("should return error InvalidArguments when given plotWidth or plotLength with value less than zero", func(t *testing.T) {
-		plotWidth, plotLength := -2, 3
+	t.Run("should return error InvalidArguments when given width or length with value less than zero", func(t *testing.T) {
+		width, length := -2, 3
 
-		_, err := entity.NewEstate(plotWidth, plotLength)
+		_, err := entity.NewEstate(width, length)
 
 		if err == nil || !apperror.ErrorIs(err, apperror.InvalidArguments) {
 			t.Fatalf("should return error invalid arguments")
@@ -44,11 +44,11 @@ func TestNewEstate(t *testing.T) {
 
 func TestSetPlants(t *testing.T) {
 	t.Run("should put plant to the correct position", func(t *testing.T) {
-		plotWidth, plotLength := 2, 2
+		width, length := 2, 2
 		h, x, y := 1, 2, 2
 		palm, _ := entity.NewPalm(h, x, y)
 		palms := []entity.Palm{*palm}
-		estate, _ := entity.NewEstate(plotWidth, plotLength)
+		estate, _ := entity.NewEstate(width, length)
 
 		estate.SetPlants(palms)
 		res := estate.Plot(x, y)
@@ -59,11 +59,11 @@ func TestSetPlants(t *testing.T) {
 	})
 
 	t.Run("should return error out of range position when given palm out of range from estate", func(t *testing.T) {
-		plotWidth, plotLength := 2, 2
+		width, length := 2, 2
 		h, x, y := 1, 2, 3
 		palm, _ := entity.NewPalm(h, x, y)
 		palms := []entity.Palm{*palm}
-		estate, _ := entity.NewEstate(plotWidth, plotLength)
+		estate, _ := entity.NewEstate(width, length)
 
 		err := estate.SetPlants(palms)
 
@@ -73,11 +73,11 @@ func TestSetPlants(t *testing.T) {
 	})
 
 	t.Run("should return error insufficient plots when given palm more than plot numbers", func(t *testing.T) {
-		plotWidth, plotLength := 1, 1
+		width, length := 1, 1
 		p1, _ := entity.NewPalm(10, 1, 1)
 		p2, _ := entity.NewPalm(10, 1, 1)
 		palms := []entity.Palm{*p1, *p2}
-		estate, _ := entity.NewEstate(plotWidth, plotLength)
+		estate, _ := entity.NewEstate(width, length)
 
 		err := estate.SetPlants(palms)
 
@@ -87,49 +87,49 @@ func TestSetPlants(t *testing.T) {
 	})
 }
 
-func TestEstatePlotWidth(t *testing.T) {
-	t.Run("should return correct estate plot width", func(t *testing.T) {
-		plotWidth, plotLength := 2, 3
+func TestEstateWidth(t *testing.T) {
+	t.Run("should return correct estate width", func(t *testing.T) {
+		width, length := 2, 3
 
-		estate, _ := entity.NewEstate(plotWidth, plotLength)
+		estate, _ := entity.NewEstate(width, length)
 
-		if estate.PlotWidth() != plotWidth {
-			t.Fatalf("estate should have plot width %d, but got %d",
-				plotWidth, estate.PlotWidth())
+		if estate.Width() != width {
+			t.Fatalf("estate should have width %d, but got %d",
+				width, estate.Width())
 		}
 	})
 }
 
-func TestEstatePloteLength(t *testing.T) {
-	t.Run("should return correct estate plot length", func(t *testing.T) {
-		plotWidth, plotLength := 2, 3
+func TestEstateLength(t *testing.T) {
+	t.Run("should return correct estate length", func(t *testing.T) {
+		plotWidth, length := 2, 3
 
-		estate, _ := entity.NewEstate(plotWidth, plotLength)
+		estate, _ := entity.NewEstate(plotWidth, length)
 
-		if estate.PlotLength() != plotLength {
-			t.Fatalf("estate should have plot length %d, but got %d",
-				plotLength, estate.PlotLength())
+		if estate.Length() != length {
+			t.Fatalf("estate should have length %d, but got %d",
+				length, estate.Length())
 		}
 	})
 }
 
 func TestEstatePlots(t *testing.T) {
 	t.Run("should return correct estate plots capacity", func(t *testing.T) {
-		plotWidth, plotLength := 2, 3
+		width, length := 2, 3
 
-		estate, _ := entity.NewEstate(plotWidth, plotLength)
+		estate, _ := entity.NewEstate(width, length)
 		plots := estate.Plots()
 
-		if len(plots) != plotLength || len(plots[0]) != plotWidth {
+		if len(plots) != length || len(plots[0]) != width {
 			t.Fatalf("estate should have plots with length %d and width %d, but got length %d and width %d",
-				plotLength, plotWidth, len(plots), len(plots[0]))
+				length, width, len(plots), len(plots[0]))
 		}
 	})
 
 	t.Run("should not return nil", func(t *testing.T) {
-		plotWidth, plotLength := 2, 3
+		width, length := 2, 3
 
-		estate, _ := entity.NewEstate(plotWidth, plotLength)
+		estate, _ := entity.NewEstate(width, length)
 		plots := estate.Plots()
 
 		if plots == nil {
