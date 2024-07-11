@@ -82,7 +82,6 @@ func main() {
 
 loop:
 	for drone.PosX()+1 <= estate.PlotWidth() || drone.PosY()+1 <= estate.PlotLength() || (drone.Facing() == constants.West && drone.PosX()-1 >= 1) {
-		// fmt.Printf("x: %d; y: %d; h: %d; travelDistance: %d\n", drone.PosX(), drone.PosY(), drone.Height(), drone.TravelDistance())
 		switch drone.Facing() {
 		case constants.East:
 			{
