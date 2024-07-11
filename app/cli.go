@@ -13,17 +13,20 @@ import (
 	"github.com/SawitProRecruitment/JuniorBackendEngineering/util"
 )
 
+// app representing cli application
 type app struct {
 	estate *entity.Estate
 	drone  entity.Drone
 }
 
+// New returning app object with drone already created
 func New() app {
 	return app{
 		drone: entity.NewDrone(1, 1),
 	}
 }
 
+// Run will be start application
 func (a *app) Run() error {
 	err := a.initializing()
 	if err != nil {
@@ -34,6 +37,7 @@ func (a *app) Run() error {
 	return nil
 }
 
+// initializing will do estate initialization and palm plotting
 func (a *app) initializing() error {
 	reader := bufio.NewReader(os.Stdin)
 	line, err := reader.ReadString('\n')
@@ -88,6 +92,8 @@ func (a *app) initializing() error {
 	return nil
 }
 
+// patrol will start drone patrol for estate which already initialized
+// in the end of patrol, it will print drone travel distance
 func (a *app) patrol() {
 	a.drone.Action(commands.MoveUp(), 1, 1)
 
