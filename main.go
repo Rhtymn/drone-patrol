@@ -81,11 +81,11 @@ func main() {
 	}
 
 loop:
-	for drone.PosX()+1 <= estate.PlotWidth() || drone.PosY()+1 <= estate.PlotLength() || (drone.Facing() == constants.West && drone.PosX()-1 >= 1) {
+	for drone.PosX()+1 <= estate.Width() || drone.PosY()+1 <= estate.Length() || (drone.Facing() == constants.West && drone.PosX()-1 >= 1) {
 		switch drone.Facing() {
 		case constants.East:
 			{
-				if drone.PosX()+1 > estate.PlotWidth() {
+				if drone.PosX()+1 > estate.Width() {
 					nextPalm := estate.Plot(drone.PosX(), drone.PosY()+1)
 					if nextPalm != nil && nextPalm.Height()+1 != drone.Height() {
 						if nextPalm.Height()+1 > drone.Height() {
@@ -125,7 +125,7 @@ loop:
 		case constants.West:
 			{
 				if drone.PosX()-1 < 1 {
-					if drone.PosY() == estate.PlotLength() {
+					if drone.PosY() == estate.Length() {
 						break loop
 					}
 					nextPalm := estate.Plot(drone.PosX(), drone.PosY()+1)

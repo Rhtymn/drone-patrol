@@ -2,32 +2,37 @@ package entity
 
 import "github.com/SawitProRecruitment/JuniorBackendEngineering/apperror"
 
+// Estate representing estate object which have width, length and plots
 type Estate struct {
-	plotWidth  int
-	plotLength int
+	width  int
+	length int
 
 	plots [][]*Palm
 }
 
-func NewEstate(plotWidth, plotLength int) (*Estate, error) {
-	if plotWidth <= 0 || plotLength <= 0 {
-		return nil, apperror.NewInvalidArguments("plotWidth and plotLength must be more than zero")
+// NewEstate returning estate object which initialized with given width and length value
+func NewEstate(width, length int) (*Estate, error) {
+	if width <= 0 || length <= 0 {
+		return nil, apperror.NewInvalidArguments("width and length must be more than zero")
 	}
 
-	plots := make([][]*Palm, plotLength)
+	plots := make([][]*Palm, length)
 	for i := 0; i < len(plots); i++ {
-		plots[i] = make([]*Palm, plotWidth)
+		plots[i] = make([]*Palm, width)
 	}
 
 	return &Estate{
-		plotWidth:  plotWidth,
-		plotLength: plotLength,
-		plots:      plots,
+		width:  width,
+		length: length,
+		plots:  plots,
 	}, nil
 }
 
+// SetPlants will ploting given palm on estate plots representation
+// if palm position given is out of range estate plots, it will return error out of range position
+// if estate plots capacity is not enough for palm plotting, it will return error insufficient plots
 func (e *Estate) SetPlants(palms []Palm) error {
-	if len(palms) > e.plotLength*e.plotWidth {
+	if len(palms) > e.length*e.width {
 		return apperror.NewInsufficientPlots()
 	}
 
@@ -42,29 +47,36 @@ func (e *Estate) SetPlants(palms []Palm) error {
 	return nil
 }
 
+// inEstate checking is given x and y position given is in estate range
 func (e *Estate) inEstate(x, y int) bool {
-	return x <= e.plotWidth && x > 0 && y > 0 && y <= e.plotLength
+	return x <= e.width && x > 0 && y > 0 && y <= e.length
 }
 
+// resetPlots removing all plant plotting
 func (e *Estate) resetPlots() {
-	plots := make([][]*Palm, e.plotLength)
+	plots := make([][]*Palm, e.length)
 	for i := 0; i < len(plots); i++ {
-		plots[i] = make([]*Palm, e.plotWidth)
+		plots[i] = make([]*Palm, e.width)
 	}
 }
 
+// Plot returning palm which on given position x and y
+// if there's no palm on given position, it will returning nil
 func (e Estate) Plot(x, y int) *Palm {
 	return e.plots[y-1][x-1]
 }
 
-func (e Estate) PlotWidth() int {
-	return e.plotWidth
+// Getter width
+func (e Estate) Width() int {
+	return e.width
 }
 
-func (e Estate) PlotLength() int {
-	return e.plotLength
+// Getter length
+func (e Estate) Length() int {
+	return e.length
 }
 
+// Getter plots
 func (e Estate) Plots() [][]*Palm {
 	return e.plots
 }
