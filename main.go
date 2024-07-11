@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/SawitProRecruitment/JuniorBackendEngineering/commands"
@@ -40,7 +41,7 @@ func main() {
 
 	for i := 0; i < estateInf[2]; i++ {
 		line, err := reader.ReadString('\n')
-		if err != nil {
+		if err != nil && err != io.EOF {
 			fmt.Fprintln(os.Stderr, "FAIL")
 			os.Exit(1)
 		}
@@ -67,7 +68,6 @@ func main() {
 
 	err = estate.SetPlants(palms)
 	if err != nil {
-		fmt.Println(err)
 		fmt.Fprintln(os.Stderr, "FAIL")
 		os.Exit(1)
 	}
