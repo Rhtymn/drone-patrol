@@ -40,11 +40,13 @@ func (a *app) Run() error {
 // initializing will do estate initialization and palm plotting
 func (a *app) initializing() error {
 	reader := bufio.NewReader(os.Stdin)
+	// read first line input which representing estate information
 	line, err := reader.ReadString('\n')
 	if err != nil {
 		return apperror.Wrap(err)
 	}
 
+	// transform string to slice of int
 	estateInf, err := util.IntSlice(line)
 	if err != nil {
 		return apperror.Wrap(err)
@@ -58,15 +60,19 @@ func (a *app) initializing() error {
 		return apperror.Wrap(err)
 	}
 
+	// initializing estate from given input
 	estate, err := entity.NewEstate(estateInf[0], estateInf[1])
+	// create array of palms with length from given input
 	palms := make([]entity.Palm, estateInf[2])
 
+	// loop for reading next line until last line
 	for i := 0; i < estateInf[2]; i++ {
 		line, err := reader.ReadString('\n')
 		if err != nil && err != io.EOF {
 			return apperror.Wrap(err)
 		}
 
+		// transform string to slice of int
 		palmInf, err := util.IntSlice(line)
 		if err != nil {
 			return apperror.Wrap(err)
@@ -76,14 +82,17 @@ func (a *app) initializing() error {
 			return apperror.Wrap(err)
 		}
 
+		// create palm from given input information
 		palm, err := entity.NewPalm(palmInf[2], palmInf[0], palmInf[1])
 		if err != nil {
 			return apperror.Wrap(err)
 		}
 
+		// add created palm to array
 		palms[i] = *palm
 	}
 
+	// for each created palms, plot to estate
 	err = estate.SetPlants(palms)
 	if err != nil {
 		return apperror.Wrap(err)
@@ -95,13 +104,17 @@ func (a *app) initializing() error {
 // patrol will start drone patrol for estate which already initialized
 // in the end of patrol, it will print drone travel distance
 func (a *app) patrol() {
+	// move up to 1 meter height at first
 	a.drone.Action(commands.MoveUp(), 1, 1)
 
 	palm := a.estate.Plot(1, 1)
+	// if there's palm on first plot, move up drone until height is palm heigth plus one
+	// drone heigth = palm height + 1
 	if palm != nil {
 		a.drone.Action(commands.MoveUp(), palm.Height(), 1)
 	}
 
+	// doing patrol until last plot
 loop:
 	for a.drone.PosX()+1 <= a.estate.Width() || a.drone.PosY()+1 <= a.estate.Length() || (a.drone.Facing() == constants.West && a.drone.PosX()-1 >= 1) {
 		switch a.drone.Facing() {
@@ -188,7 +201,9 @@ loop:
 			}
 		}
 	}
+	// move drone to down until ground
 	a.drone.Action(commands.MoveDown(), a.drone.Height(), 1)
 
+	// print drone travel distance
 	fmt.Println(a.drone.TravelDistance())
 }
