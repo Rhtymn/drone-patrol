@@ -80,7 +80,9 @@ func main() {
 		drone.Action(commands.MoveUp(), palm.Height(), 1)
 	}
 
-	for drone.PosX()+1 <= estate.PlotWidth() || drone.PosY()+1 <= estate.PlotLength() {
+loop:
+	for drone.PosX()+1 <= estate.PlotWidth() || drone.PosY()+1 <= estate.PlotLength() || (drone.Facing() == constants.West && drone.PosX()-1 >= 1) {
+		// fmt.Printf("x: %d; y: %d; h: %d; travelDistance: %d\n", drone.PosX(), drone.PosY(), drone.Height(), drone.TravelDistance())
 		switch drone.Facing() {
 		case constants.East:
 			{
@@ -92,10 +94,13 @@ func main() {
 							drone.Action(commands.MoveNorth(), 1, 10)
 						} else {
 							drone.Action(commands.MoveNorth(), 1, 10)
-							drone.Action(commands.MoveDown(), drone.Height()-nextPalm.Height()+1, 1)
+							drone.Action(commands.MoveDown(), drone.Height()-(nextPalm.Height()+1), 1)
 						}
+						drone.SetFacing(constants.West)
+						continue
 					}
 
+					drone.Action(commands.MoveNorth(), 1, 10)
 					drone.SetFacing(constants.West)
 					continue
 				}
@@ -112,14 +117,18 @@ func main() {
 						drone.Action(commands.MoveEast(), 1, 10)
 					} else {
 						drone.Action(commands.MoveEast(), 1, 10)
-						drone.Action(commands.MoveDown(), drone.Height()-nextPalm.Height()+1, 1)
+						drone.Action(commands.MoveDown(), drone.Height()-(nextPalm.Height()+1), 1)
 					}
+					continue
 				}
 				drone.Action(commands.MoveEast(), 1, 10)
 			}
 		case constants.West:
 			{
 				if drone.PosX()-1 < 1 {
+					if drone.PosY() == estate.PlotLength() {
+						break loop
+					}
 					nextPalm := estate.Plot(drone.PosX(), drone.PosY()+1)
 					if nextPalm != nil && nextPalm.Height()+1 != drone.Height() {
 						if nextPalm.Height()+1 > drone.Height() {
@@ -127,10 +136,13 @@ func main() {
 							drone.Action(commands.MoveNorth(), 1, 10)
 						} else {
 							drone.Action(commands.MoveNorth(), 1, 10)
-							drone.Action(commands.MoveDown(), drone.Height()-nextPalm.Height()+1, 1)
+							drone.Action(commands.MoveDown(), drone.Height()-(nextPalm.Height()+1), 1)
 						}
+						drone.SetFacing(constants.East)
+						continue
 					}
 
+					drone.Action(commands.MoveNorth(), 1, 10)
 					drone.SetFacing(constants.East)
 					continue
 				}
@@ -147,8 +159,9 @@ func main() {
 						drone.Action(commands.MoveWest(), 1, 10)
 					} else {
 						drone.Action(commands.MoveWest(), 1, 10)
-						drone.Action(commands.MoveDown(), drone.Height()-nextPalm.Height()+1, 1)
+						drone.Action(commands.MoveDown(), drone.Height()-(nextPalm.Height()+1), 1)
 					}
+					continue
 				}
 				drone.Action(commands.MoveWest(), 1, 10)
 			}
